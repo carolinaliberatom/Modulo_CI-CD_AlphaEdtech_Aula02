@@ -25,7 +25,7 @@ describe("POST /todo", () => {
   it("should add a task", async () => {
     const response = await request
       .post("/todo")
-      .send({ tarefa: "tarefa de teste" });
+      .send({ tarefa: null });
 
     expect(response.status).toBe(200);
 
