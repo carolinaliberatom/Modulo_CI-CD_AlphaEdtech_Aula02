@@ -25,7 +25,7 @@ describe("POST /todo", () => {
   it("should add a task", async () => {
     const response = await request
       .post("/todo")
-      .send({ tarefa: null });
+      .send({ tarefa: "tarefa de teste" });
 
     expect(response.status).toBe(200);
 
@@ -40,6 +40,14 @@ describe("POST /todo", () => {
         descricao: "tarefa de teste",
       },
     ]);
+  });
+  it("should not add a task if no description is provided", async () => {
+    const response = await request.post("/todo").send({ tarefa: "" });
+
+    expect(response.status).toBe(400); 
+    expect(response.body).toEqual({
+      mensagem: "A descrição da tarefa é necessária.",
+    });
   });
 });
 
@@ -62,5 +70,13 @@ describe("DELETE /todo/:id", () => {
         descricao: "tarefa teste 2",
       },
     ]);
+  });
+  it("should return an error if no task with the given id exists", async () => {
+    const response = await request.delete("/todo/999");
+
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({
+      mensagem: "Tarefa não encontrada.",
+    });
   });
 });
