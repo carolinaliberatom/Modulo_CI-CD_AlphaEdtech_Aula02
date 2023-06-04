@@ -1,0 +1,50 @@
+# Nome exibido na interface do GitHub Actions
+name: Build TypeScript Aula02
+
+# Evento que dispira o workflow
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# Define as tarefas
+jobs:
+  # 1ª tarefa: Build (nome arbitrário)
+  build:
+    # Será executada na VM mais recente do Ubuntu disponível no GitHub Actions
+    runs-on: ubuntu-latest
+
+    strategy:
+      # Define uma matriz de configurações que será usada nos próximos passos, no caso versão 16.x do Node
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      #1ª passo: Faz o checkout do código do repositório 
+    - uses: actions/checkout@v3
+      #2ª passo: Configura a versão do Node de acordo com a matriz
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+      #3ª passo: Instala as dependências do projeto
+    - name: Install Dependencies
+      run: npm install
+      #4ª passo: Compila o código
+    - name: Build
+      run: npx tsc
+  
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16.x'
+    - name: Install dependencies
+      run: npm install
+    - name: Test
+      run: npm test
