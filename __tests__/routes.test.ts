@@ -41,6 +41,14 @@ describe("POST /todo", () => {
       },
     ]);
   });
+  it("should not add a task if no description is provided", async () => {
+    const response = await request.post("/todo").send({ tarefa: "" });
+
+    expect(response.status).toBe(400); 
+    expect(response.body).toEqual({
+      erro: "formato de requisição incorreto :(",
+    });
+  });
 });
 
 describe("DELETE /todo/:id", () => {
@@ -62,5 +70,13 @@ describe("DELETE /todo/:id", () => {
         descricao: "tarefa teste 2",
       },
     ]);
+  });
+  it("should return an error if no task with the given id exists", async () => {
+    const response = await request.delete("/todo/999");
+
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({
+      mensagem: "ID não encontrado!",
+    });
   });
 });
