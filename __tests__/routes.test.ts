@@ -46,7 +46,7 @@ describe("POST /todo", () => {
 
     expect(response.status).toBe(400); 
     expect(response.body).toEqual({
-      mensagem: "A descrição da tarefa é necessária.",
+      erro: "formato de requisição incorreto :(",
     });
   });
 });
@@ -76,7 +76,7 @@ describe("DELETE /todo/:id", () => {
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({
-      mensagem: "Tarefa não encontrada.",
+      mensagem: "ID não encontrado!",
     });
   });
 });
