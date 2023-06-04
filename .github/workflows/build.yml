@@ -4,9 +4,7 @@ name: Build TypeScript Aula02
 # Evento que dispira o workflow
 on:
   push:
-    branches: [ main ]
   pull_request:
-    branches: [ main ]
 
 # Define as tarefas
 jobs:
