@@ -46,3 +46,16 @@ jobs:
       run: npm install
     - name: Test
       run: npm test
+
+  deploy-staging:
+    needs: [build, test]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Deploy to staging
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: ${{ secrets.RENDER_WEBHOOK_URL_STAGING }}
+        method: 'POST'
